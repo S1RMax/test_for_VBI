@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Тестовое задание</title>
+  </head>
+  <style>
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 25%);
+    }
+
+    .container .block {
+      text-align: center;
+      background-color: #fff;
+      padding: calc(50% - 9px) 0;
+      color: #000;
+    }
+
+    .container .honest {
+      background-color: grey;
+      color: #fff;
+    }
+    .popup_block {
+      position: absolute;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+    .popup_body {
+      position: absolute;
+      background-color: #a2a2a2;
+      border-radius: 10px;
+      width: 500px;
+      height: fit-content;
+      top: 100px;
+      left: calc(50% - 250px);
+      text-align: center;
+      padding: 90px 0;
+      transition: all 0.5s;
+      opacity: 0;
+    }
+    .popup_block .popup_close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+    }
+    .show {
+      z-index: 10;
+      opacity: 1;
+    }
+  </style>
+  <body>
+    <div class="container" id="main_cont">
+      <div class="block" onclick="call_popup(this)">
+        1
+      </div>
+      <div class="block" onclick="call_popup(this)">
+        2
+      </div>
+      <div class="block" onclick="call_popup(this)">
+        3
+      </div>
+      <div class="block" onclick="call_popup(this)">
+        4
+      </div>
+    </div>
+    <input id="color_change" onclick="color_change()" type="checkbox" name="" value="">
+    <button type="button" name="button" onclick="add_item()">add new item</button>
+
+  </body>
+  <div class="popup_block" id="popup" onclick="close_popup()">
+    <div class="popup_body" id="popup_body">
+      <span class="popup_close" onclick="close_popup()">X</span>
+      <span id="popup_text"></span>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function color_change() {
+      const checkbox = document.getElementById('color_change');
+      if (checkbox.checked) {
+        Array.prototype.forEach.call(document.querySelectorAll(".container > .block:nth-child(2n)"), function(elem){
+         elem.classList.add('honest');
+        });
+      } else {
+        Array.prototype.forEach.call(document.querySelectorAll(".container > .block:nth-child(2n)"), function(elem){
+         elem.classList.remove('honest');
+        });
+      }
+    }
+    function add_item() {
+      document.getElementById("main_cont").innerHTML += '<div class="block" onclick="call_popup(this)">' + (document.querySelectorAll(".block").length + 1) + '</div>';
+      color_change();
+    }
+    function call_popup(elem) {
+      setTimeout(() => {
+        document.getElementById('popup_text').innerHTML = elem.innerHTML;
+        document.getElementById('popup').classList.add('show');
+        document.getElementById('popup_body').classList.add('show');
+      }, 500);
+    }
+    function close_popup() {
+      document.getElementById('popup_body').classList.remove('show');
+      setTimeout(() => {document.getElementById('popup').classList.remove('show');}, 500);
+    }
+  </script>
+</html>
